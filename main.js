@@ -30,28 +30,30 @@ const textProcessor = (algo, operation, input, options) => {
     }
 
     const RLEdecomp = (input) => {
-        let text = "";
-        let caracter = "";
-        let de_cate_ori = 0;
-        let numberSTr = "";
+    let text = "";
+    let numberStr = "";
 
-        for (let i = 0; i < input.length; i++) {
-            if (!isNaN(input[i])) {
-                numberSTr += input[i];
-            } else {
-                if (numberSTr === "") throw new Error("InvalidInput");
-                caracter = input[i];
-                de_cate_ori = Number(numberSTr);
+    for (let i = 0; i < input.length; i++) {
+        const char = input[i];
 
-                for (let j = 0; j < de_cate_ori; j++) {
-                    text += caracter;
-                }
-                numberSTr = "";
+        if (char >= '0' && char <= '9') {
+            numberStr += char;
+        } else if ((char >= 'A' && char <= 'Z') || (char >= 'a' && char <= 'z')) {
+            if (numberStr === "") throw new Error("InvalidInput"); // trebuie un număr înainte
+            const count = Number(numberStr);
+            for (let j = 0; j < count; j++) {
+                text += char; // adaugăm caracterul de count ori
             }
+            numberStr = "";
+        } else {
+            throw new Error("InvalidInput"); // orice alt caracter e interzis
         }
-        if (numberSTr !== "") throw new Error("InvalidInput");
-        return text;
     }
+
+    if (numberStr !== "") throw new Error("InvalidInput"); // input se termină cu cifre fără literă
+    return text;
+}
+
 
     let shift;
     if (algo === "caesar") {
