@@ -18,12 +18,12 @@ const textProcessor = (algo, operation, input, options) => {
         throw new Error("InvalidAlgorithm");
     }
 
-    const RLEcomp = (input) => {
+     const RLEcomp = (input) => {
         let text = "";
         let nr = 1;
 
         for (let i = 1; i < input.length; i++) 
-            {
+        {
             if (input[i] === input[i - 1]) 
             {
                 nr++;
@@ -33,12 +33,12 @@ const textProcessor = (algo, operation, input, options) => {
             }
         }
 
-
-        text = text + nr + input[input.length - 1];
+       
+        if (input.length > 0) {
+            text = text + nr + input[input.length - 1];
+        }
+        
         return text;
-
-
-
     }
 
     const RLEdecomp = (input) => {
