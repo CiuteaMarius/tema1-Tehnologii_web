@@ -42,33 +42,44 @@ const textProcessor = (algo, operation, input, options) => {
     }
 
     const RLEdecomp = (input) => {
-        let text = "";
-        let caracter = "";
-        let de_cate_ori = 0;
-        let numberSTr = "";
-
-        for (let i = 0; i < input.length; i++) {
-            if (!isNaN(input[i])) 
-            {
-
-                numberSTr += input[i];
-
-            } else {
-                if (numberSTr === "") throw new Error("InvalidInput");
-
-
-                caracter = input[i];
-                de_cate_ori = Number(numberSTr);
-
-                for (let j = 0; j < de_cate_ori; j++) {
-                    text += caracter;
-                }
-                numberSTr = "";
-            }
-        }
-        if (numberSTr !== "") throw new Error("InvalidInput");
-        return text;
+    if (!input) {
+        return "";
     }
+
+    if (!/[0-9]/.test(input[0])) {
+        if (/[0-9]/.test(input)) {
+            throw new Error("InvalidInput");
+        }
+        return input;
+    }
+
+    let text = "";
+    let caracter = "";
+    let de_cate_ori = 0;
+    let numberSTr = "";
+
+    for (let i = 0; i < input.length; i++) {
+        if (/[0-9]/.test(input[i])) {
+            numberSTr += input[i];
+        } else {
+            if (numberSTr === "") throw new Error("InvalidInput");
+
+            if (!/[A-Za-z]/.test(input[i])) {
+                throw new Error("InvalidInput");
+            }
+
+            caracter = input[i];
+            de_cate_ori = Number(numberSTr);
+
+            text += caracter.repeat(de_cate_ori);
+
+            numberSTr = "";
+        }
+    }
+
+    if (numberSTr !== "") throw new Error("InvalidInput");
+    return text;
+}
 
     let shift;
     if (algo === "caesar") 
