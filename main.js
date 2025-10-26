@@ -1,15 +1,20 @@
 const textProcessor = (algo, operation, input, options) => {
 
-    if (typeof operation !== "boolean") {
+    if (typeof operation !== "boolean") 
+        {
         throw new Error("InvalidType");
     }
 
-    if (typeof input !== "string") {
+    if (typeof input !== "string") 
+        {
         throw new Error("InvalidType");
     }
 
     algo = algo.toLowerCase();
-    if (algo !== "rle" && algo !== "caesar") {
+
+
+    if (algo !== "rle" && algo !== "caesar") 
+    {
         throw new Error("InvalidAlgorithm");
     }
 
@@ -17,44 +22,68 @@ const textProcessor = (algo, operation, input, options) => {
         let text = "";
         let nr = 1;
 
-        for (let i = 1; i < input.length; i++) {
-            if (input[i] === input[i - 1]) {
+        for (let i = 1; i < input.length; i++) 
+        {
+            if (input[i] === input[i - 1]) 
+            {
                 nr++;
             } else {
                 text = text + nr + input[i - 1];
                 nr = 1;
             }
         }
-        text = text + nr + input[input.length - 1];
-        return text;
-    }
 
-    const RLEdecomp = (input) => {
-        let text = "";
-        let caracter = "";
-        let de_cate_ori = 0;
-        let numberSTr = "";
-
-        for (let i = 0; i < input.length; i++) {
-            if (!isNaN(input[i])) {
-                numberSTr += input[i];
-            } else {
-                if (numberSTr === "") throw new Error("InvalidInput");
-                caracter = input[i];
-                de_cate_ori = Number(numberSTr);
-
-                for (let j = 0; j < de_cate_ori; j++) {
-                    text += caracter;
-                }
-                numberSTr = "";
-            }
+       
+        if (input.length > 0) {
+            text = text + nr + input[input.length - 1];
         }
-        if (numberSTr !== "") throw new Error("InvalidInput");
+        
         return text;
     }
+
+   const RLEdecomp = (input) => {
+    if (!input) {
+        return "";
+    }
+
+    if (!/[0-9]/.test(input[0])) {
+        if (/[0-9]/.test(input)) {
+            throw new Error("InvalidInput");
+        }
+        return input;
+    }
+
+    let text = "";
+    let caracter = "";
+    let de_cate_ori = 0;
+    let numberSTr = "";
+
+    for (let i = 0; i < input.length; i++) {
+        if (/[0-9]/.test(input[i])) {
+            numberSTr += input[i];
+        } else {
+            if (numberSTr === "") throw new Error("InvalidInput");
+
+            if (!/[A-Za-z]/.test(input[i])) {
+                throw new Error("InvalidInput");
+            }
+
+            caracter = input[i];
+            de_cate_ori = Number(numberSTr);
+
+            text += caracter.repeat(de_cate_ori);
+
+            numberSTr = "";
+        }
+    }
+
+    if (numberSTr !== "") throw new Error("InvalidInput");
+    return text;
+}
 
     let shift;
-    if (algo === "caesar") {
+    if (algo === "caesar") 
+    {
         if (!options || typeof options.shift !== "number") {
             throw new Error("InvalidInput");
         }
@@ -66,25 +95,33 @@ const textProcessor = (algo, operation, input, options) => {
         let arr = [];
         let text = "";
 
-        for (let i = 0; i < letter_list.length; i++) {
+        for (let i = 0; i < letter_list.length; i++) 
+        {
             arr.push(letter_list[i]);
         }
 
-        for (let i = 0; i < input.length; i++) {
-            for (let j = 0; j < arr.length; j++) {
+        for (let i = 0; i < input.length; i++) 
+        {
+            for (let j = 0; j < arr.length; j++)
+            {
 
                 let newIndex = -1;
-                if (input[i] === " ") {
+                if (input[i] === " ") 
+                {
                     text += input[i];
                     break;
                 }
-                if (input[i] === arr[j]) {
+                if (input[i] === arr[j])
+                {
                     newIndex = (j + shift) % 26;
+
                     text += arr[newIndex];
                     break;
                 }
-                if (input[i] === arr[j].toUpperCase()) {
+                if (input[i] === arr[j].toUpperCase()) 
+                {
                     newIndex = (j + shift) % 26;
+
                     text += arr[newIndex].toUpperCase();
                     break;
                 }
@@ -99,27 +136,33 @@ const textProcessor = (algo, operation, input, options) => {
         let arr = [];
         let text = "";
 
-        for (let i = 0; i < letter_list.length; i++) {
+        for (let i = 0; i < letter_list.length; i++) 
+        {
             arr.push(letter_list[i]);
         }
 
-        for (let i = 0; i < input.length; i++) {
+        for (let i = 0; i < input.length; i++) 
+        {
 
-            if (input[i] === " ") {
+            if (input[i] === " ") 
+            {
                 text += input[i];
                 continue;
             }
 
-            for (let j = 0; j < arr.length; j++) {
+            for (let j = 0; j < arr.length; j++) 
+            {
                 let newIndex = -1;
 
-                if (input[i] === arr[j]) {
+                if (input[i] === arr[j]) 
+                {
                     newIndex = (j - shift + 26) % 26;
                     text += arr[newIndex];
                     break;
                 }
 
-                if (input[i] === arr[j].toUpperCase()) {
+                if (input[i] === arr[j].toUpperCase()) 
+                {
                     newIndex = (j - shift + 26) % 26;
                     text += arr[newIndex].toUpperCase();
                     break;
@@ -137,9 +180,11 @@ const textProcessor = (algo, operation, input, options) => {
             }
 
             if (operation) {
-                for (let i = 0; i < input.length; i++) {
+                for (let i = 0; i < input.length; i++) 
+                {
                     const char = input[i];
-                    if (char >= '0' && char <= '9') {
+                    if (char >= '0' && char <= '9')
+                    {
                         throw new Error("InvalidInput");
                     }
                 }
@@ -149,14 +194,17 @@ const textProcessor = (algo, operation, input, options) => {
             }
 
         case "caesar":
-            for (let i = 0; i < input.length; i++) {
+            for (let i = 0; i < input.length; i++) 
+            {
                 const char = input[i];
-                if (!((char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || char === ' ')) {
+                if (!((char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || char === ' ')) 
+                {
                     throw new Error("InvalidInput");
                 }
             }
 
-            if (operation) {
+            if (operation) 
+            {
                 return ceaserComp(input, shift);
             } else {
                 return ceaserDecomp(input, shift);
