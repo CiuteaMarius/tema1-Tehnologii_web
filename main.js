@@ -18,7 +18,7 @@ const textProcessor = (algo, operation, input, options) => {
         throw new Error("InvalidAlgorithm");
     }
 
-    const RLEcomp = (input) => {
+     const RLEcomp = (input) => {
         let text = "";
         let nr = 1;
 
